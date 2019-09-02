@@ -1,0 +1,1716 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>i5ting_ztree_toc:rest_api</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿# 接口一般约定</p>
+<h2 id="-">参数要求</h2>
+<ul>
+<li><strong>所有时间戳都精确到毫秒，用13位的bigint格式</strong></li>
+<li><strong>http请求的时候公共参数(每次请求http接口的时都需带上的参数)：lang,packtype,version,usertoken</strong> </li>
+<li><strong>每次http请求返回的结果内容都是json格式的字符串</strong></li>
+<li><strong>如果以post方式请求数据，post的数据尽量采用json格式，并把json字符串加密之后放在post form的param字段</strong></li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP方式</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>GET</td>
+<td>否</td>
+<td>是</td>
+<td>string</td>
+<td>当前用户token</td>
+</tr>
+<tr>
+<td>packtype</td>
+<td>GET</td>
+<td>否</td>
+<td>是</td>
+<td>int</td>
+<td>PcWeb=1 H5=2 IOS=3 Android=4</td>
+</tr>
+<tr>
+<td>version</td>
+<td>GET</td>
+<td>否</td>
+<td>是</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>lang</td>
+<td>GET</td>
+<td>否</td>
+<td>是</td>
+<td>string</td>
+<td>en表示英文 cn表示中文</td>
+</tr>
+<tr>
+<td>operatingsystem</td>
+<td>POST json格式的字符串需要加密</td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>设备操作系统</td>
+</tr>
+<tr>
+<td>deviceid</td>
+<td>POST json格式的字符串需要加密</td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>设备标识</td>
+</tr>
+<tr>
+<td><strong>apikey</strong></td>
+<td>POST json格式的字符串需要加密</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>当请求中有apikey且长度大于零的时候 服务端将校验apikey 并且不校验usertoken</td>
+</tr>
+</tbody>
+</table>
+<p><strong>lang</strong></p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cn</td>
+<td>简体中文</td>
+</tr>
+<tr>
+<td>de</td>
+<td>德文</td>
+</tr>
+<tr>
+<td>en</td>
+<td>英文</td>
+</tr>
+<tr>
+<td>es</td>
+<td>西班牙</td>
+</tr>
+<tr>
+<td>fr</td>
+<td>法文</td>
+</tr>
+<tr>
+<td>ko</td>
+<td>韩文</td>
+</tr>
+<tr>
+<td>jp</td>
+<td>日文</td>
+</tr>
+<tr>
+<td>ru</td>
+<td>俄文</td>
+</tr>
+<tr>
+<td>tw</td>
+<td>繁體中文</td>
+</tr>
+</tbody>
+</table>
+<p>请求数据的例子</p>
+<pre><code>curl -X GET &#39;https://market.happyex.net/v1/klines.ashx?lang=cn&amp;packtype=1&amp;version=9.9.9&amp;usertoken=aaaaaaaa&amp;symbol=YOYO_BTC&amp;interval=1m&#39;
+</code></pre><pre><code>curl -X POST &#39;https://broker.happyex.net/queryorder.ashx?lang=cn&amp;packtype=1&amp;version=9.9.9&amp;usertoken=aaaaaaaaa&#39; -d &#39;param=DA5D47C0F8762663CB24E9252D4B033428FFF5407AFB87C2ADD86624E3CF1FD094EEF19BC165A6DDA385066F43D860CC56DA5B7959982B4332E91C9E98B1A1EF6647AF4299BB79C00CEBAC46CAC20F2F57AB3C96CADA50237C67F3728A5753E4&#39;
+</code></pre><ul>
+<li>其中param参数后面的字符串是加密后的json参数</li>
+<li>每次http请求返回的结果内容都是json格式的字符串：status, message, data，在data字段里面放业务层的内容</li>
+</ul>
+<p><strong>status 状态：</strong></p>
+<ul>
+<li>1  表示成功</li>
+<li>-1 失败，一般就显示下message对应的错误信息</li>
+<li>-2 需要登录</li>
+<li>-3 需要交易登录</li>
+<li>-4 余额不足需要弹充值框</li>
+<li>-5 密码重试太多，需要弹找回密码框
+message    错误信息    当status==-1的时候，用来显示的错误信息</li>
+</ul>
+<h2 id="post-">Post加密方式</h2>
+<ul>
+<li>加密方法：3des</li>
+<li>加密模式：<strong>CBC</strong> </li>
+<li>加密填充：<strong>pkcs7padding</strong>  </li>
+<li>输出： <strong>hex</strong></li>
+</ul>
+<p>desKey与desIV 请在happyex网站apikey设置页面获取（暂未开放，需联系技术人员提供）</p>
+<p><strong>C# demo</strong></p>
+<pre><code class="lang-c#">public static string EncodeParam(string param, string desKey, string desIV)
+{
+    byte[] data = Encoding.UTF8.GetBytes(param);
+    using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
+    {
+        tdes.Mode = CipherMode.CBC;
+        tdes.Padding = PaddingMode.PKCS7;
+        tdes.Key = Encoding.UTF8.GetBytes(desKey);
+        tdes.IV = Encoding.UTF8.GetBytes(desIV);
+        ICryptoTransform cTransform = tdes.CreateEncryptor();
+        byte[] resultArray = cTransform.TransformFinalBlock(data, 0, data.Length);
+        SoapHexBinary shb = new SoapHexBinary(resultArray);
+        return shb.ToString();
+    }
+}
+
+public static string DecodeParam(string hexString, string desKey, string desIV)
+{
+    SoapHexBinary shb = SoapHexBinary.Parse(hexString);
+    byte[] data = shb.Value;
+    using (TripleDESCryptoServiceProvider tdes = new TripleDESCryptoServiceProvider())
+    {
+        tdes.Key = Encoding.UTF8.GetBytes(desKey);
+        tdes.IV = Encoding.UTF8.GetBytes(desIV);
+        ICryptoTransform cTransform = tdes.CreateDecryptor();
+        byte[] resultArray = cTransform.TransformFinalBlock(data, 0, data.Length);
+        string ret = UTF8Encoding.UTF8.GetString(resultArray);
+        return ret;
+    }
+}
+
+</code></pre>
+<p><strong>PHP demo</strong></p>
+<pre><code class="lang-php">&lt;?php
+class CryptDes {
+     var $key;
+     var $iv;
+     function CryptDes($key, $iv){
+        $this-&gt;key = $key;
+        $this-&gt;iv = $iv;
+     }
+
+     function encrypt($input){
+         $size = mcrypt_get_block_size(MCRYPT_3DES,MCRYPT_MODE_CBC);
+         $input = $this-&gt;PaddingPKCS7($input);
+         $td = mcrypt_module_open(MCRYPT_3DES,&#39;&#39;,MCRYPT_MODE_CBC, &#39;&#39;);        
+         @mcrypt_generic_init($td, $this-&gt;key, $this-&gt;iv);
+         $data = mcrypt_generic($td, $input);
+         mcrypt_generic_deinit($td);
+         mcrypt_module_close($td);
+         return strtoupper(bin2hex($data));
+     }
+
+     function decrypt($encrypted){        
+         $encrypted = $this-&gt;hex2bin($encrypted);       
+         $td = mcrypt_module_open(MCRYPT_3DES,&#39;&#39;,MCRYPT_MODE_CBC,&#39;&#39;);         
+         $ks = mcrypt_enc_get_key_size($td);
+         @mcrypt_generic_init($td,  $this-&gt;key, $this-&gt;iv);
+         $decrypted = mdecrypt_generic($td, $encrypted);
+         mcrypt_generic_deinit($td);
+         mcrypt_module_close($td);
+         $y=$this-&gt;UnPaddingPKCS7($decrypted);
+         return $y;
+     }
+
+     function hex2bin($hexData)
+     {
+        $binData = &quot;&quot;;
+        for($i = 0; $i &lt; strlen ($hexData); $i += 2)
+        {
+           $binData .= chr(hexdec(substr($hexData, $i, 2)));
+        }        
+        return $binData;
+    }
+
+     function PaddingPKCS7($data) {
+         $block_size = mcrypt_get_block_size(MCRYPT_DES, MCRYPT_MODE_CBC);
+         $padding_char = $block_size - (strlen($data) % $block_size);
+         $data .= str_repeat(chr($padding_char),$padding_char);
+         return $data;
+     }
+
+     private function UnPaddingPKCS7 ($text)
+     {
+        $pad = ord($text{strlen($text) - 1});
+        if ($pad &gt; strlen($text)) {
+            return false;
+        }
+        if (strspn($text, chr($pad), strlen($text) - $pad) != $pad) {
+            return false;
+        }
+        return substr($text, 0, - 1 * $pad);
+     }
+}
+
+$des = new CryptDes(&quot;key&quot;,&quot;iv&quot;);//（秘钥向量，混淆向量）
+echo $ret = $des-&gt;decrypt(&quot;密文&quot;);//加密字符串
+?&gt;
+
+</code></pre>
+<p><strong>Java demo</strong></p>
+<pre><code class="lang-java">import javax.crypto.Cipher;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import java.security.Key;
+
+public class Des3Utils {
+    // 加解密统一使用的编码方式
+    private final static String encoding = &quot;UTF-8&quot;;
+    /**
+     * 3DES加密
+     * @param plainText 明文
+     */
+    public static String encode(String plainText,String secretKey,String iv){
+        try{
+            Key deskey = null;
+            DESedeKeySpec spec = new DESedeKeySpec(secretKey.getBytes());
+            SecretKeyFactory keyfactory = SecretKeyFactory.getInstance(&quot;desede&quot;);
+            deskey = keyfactory.generateSecret(spec);
+
+            Cipher cipher = Cipher.getInstance(&quot;desede/CBC/PKCS5Padding&quot;);
+            IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
+            cipher.init(Cipher.ENCRYPT_MODE, deskey, ips);
+            byte[] encryptData = cipher.doFinal(plainText.getBytes(encoding));
+            return toHexString(encryptData);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return plainText;
+    }
+
+    /**
+     * 3DES解密
+     * @param encryptText 加密文本
+     */
+    public static String decode(String encryptText,String secretKey,String iv){
+        try{
+            Key deskey = null;
+            DESedeKeySpec spec = new DESedeKeySpec(secretKey.getBytes());
+            SecretKeyFactory keyfactory = SecretKeyFactory.getInstance(&quot;desede&quot;);
+            deskey = keyfactory.generateSecret(spec);
+            Cipher cipher = Cipher.getInstance(&quot;desede/CBC/PKCS5Padding&quot;);
+            IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
+            cipher.init(Cipher.DECRYPT_MODE, deskey, ips);
+
+            byte[] decryptData = cipher.doFinal(fromHexString(encryptText));
+            return new String(decryptData, encoding);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return encryptText;
+    }
+
+    public static byte[] toHex(byte[] digestByte) {
+        byte[] rtChar = new byte[digestByte.length * 2];
+        for (int i = 0; i &lt; digestByte.length; i++) {
+            byte b1 = (byte) (digestByte[i] &gt;&gt; 4 &amp; 0x0f);
+            byte b2 = (byte) (digestByte[i] &amp; 0x0f);
+            rtChar[i * 2] = (byte) (b1 &lt; 10 ? b1 + 48 : b1 + 55);
+            rtChar[i * 2 + 1] = (byte) (b2 &lt; 10 ? b2 + 48 : b2 + 55);
+        }
+        return rtChar;
+    }
+
+    public static String toHexString(byte[] digestByte) {
+        return new String(toHex(digestByte));
+    }
+
+    public static byte[] fromHex(byte[] sc) {
+        byte[] res = new byte[sc.length / 2];
+        for (int i = 0; i &lt; sc.length; i++) {
+            byte c1 = (byte) (sc[i] - 48 &lt; 17 ? sc[i] - 48 : sc[i] - 55);
+            i++;
+            byte c2 = (byte) (sc[i] - 48 &lt; 17 ? sc[i] - 48 : sc[i] - 55);
+            res[i / 2] = (byte) (c1 * 16 + c2);
+        }
+        return res;
+    }
+
+    public static byte[] fromHexString(String hex) {
+        return fromHex(hex.getBytes());
+    }
+}
+
+</code></pre>
+<h1 id="-">行情接口</h1>
+<h2 id="-">获取品种列表</h2>
+<pre><code>GET https://market.happyex.net/v1/product.ashx?curMarket={curMarket}&amp;assetCode={assetCode}&amp;lang={lang}&amp;version={version}
+</code></pre><ul>
+<li>curMarket: 市场分类，假如不传此参数，返回所有的市场数据</li>
+<li>assetCode: 资产货币，假如不传此参数，返回所有的资产数据</li>
+<li>lang: 语言</li>
+<li>version: 版本</li>
+</ul>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{    
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;success&quot;,
+    &quot;data&quot;: [{
+        &quot;symbol&quot;: &quot;ETH_BTC&quot;, 
+        &quot;status&quot;: true, //开盘状态
+        &quot;statusText&quot;: &quot;&quot;, //开盘说明
+        &quot;name&quot;: &quot;ETH/BTC&quot;, //合约名字
+        &quot;assetCode&quot;: &quot;ETH&quot;, //资金代码
+        &quot;curMarket&quot;: &quot;BTC&quot;, //市场代码
+        &quot;tickSize&quot;: &quot;0.000000&quot;, //最小价格波动
+        &quot;decimalplace&quot;: &quot;6&quot;, //小数位
+        &quot;lots&quot;: &quot;6&quot;, //最小交易数量
+        &quot;minOrderAmount&quot;: &quot;6&quot;, //最小交易金额
+        &quot;open&quot;: &quot;0.000000&quot;, //24小时开盘价
+        &quot;high&quot;: &quot;0.000000&quot;, //24小时最高价
+        &quot;low&quot;: &quot;0.000000&quot;, //24小时最低价
+        &quot;close&quot;: &quot;0.000000&quot;, //最新价格
+        &quot;volume&quot;: &quot;0.000000&quot; //交易量
+        &quot;upDown&quot;: &quot;0.000000&quot; //涨跌额
+        &quot;upDownRate&quot;: &quot;1%&quot; //涨跌额
+        &quot;tradedMoney&quot;: &quot;12345.90&quot; //交易额
+        &quot;tickerid&quot;: 111 //ticker  id
+        &quot;legalAmount&quot;: “$100” //法币金额
+    }]
+}
+</code></pre>
+<h2 id="-trades-">获取trades数据</h2>
+<pre><code>GET https://market.happyex.net/v1/aggtrades.ashx?symbol={symbol}&amp;limit={limit}&amp;lang={lang}&amp;version={version}
+</code></pre><ul>
+<li>symbol:合约代码</li>
+<li>limit:trades 条数</li>
+<li>lang:语言</li>
+<li>version:版本</li>
+</ul>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;success&quot;,
+    &quot;data&quot;: [{
+        &quot;a&quot;: &quot;26129&quot;, // Aggregate tradeId
+        &quot;p&quot;: &quot;0.01633102&quot;, // Price
+        &quot;q&quot;: &quot;4.70443515&quot;, // Quantity
+        &quot;f&quot;: &quot;27781&quot;, // First tradeId
+        &quot;l&quot;: &quot;27781&quot;, // Last tradeId
+        &quot;T&quot;: &quot;1498793709153&quot;, // Timestamp
+        &quot;m&quot;: true, // Was the buyer the maker?
+        &quot;M&quot;: true // Was the trade the best price match?
+    }]
+}
+</code></pre>
+<h2 id="-orderbook">获取orderbook</h2>
+<pre><code>GET https://market.happyex.net/v1/depth.ashx?symbol={symbol}&amp;limit={limit}&amp;lang={lang}&amp;version={version}
+</code></pre><ul>
+<li>symbol:合约代码</li>
+<li>limit:深度</li>
+<li>lang:语言</li>
+<li>version:版本</li>
+</ul>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+  &quot;status&quot;: &quot;1&quot;,
+  &quot;message&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+        &quot;symbol&quot;: &quot;ETH_BTC&quot;, //合约代码
+        &quot;name&quot;: &quot;ETH/BTC&quot;,  //合约显示名字
+        &quot;assetCode&quot;: &quot;ETH&quot;,  //资金代码
+        &quot;curMarket&quot;: &quot;BTC&quot;,  //市场代码
+        &quot;lastupdateid&quot;: &quot;1&quot;,  //最新更新orderbookid
+        &quot;risefall&quot;: &quot;0&quot;,  //价格颜色  0 白 1 红  2 绿
+        &quot;lastPrice&quot;: &quot;8&quot;,  //最新价
+        &quot;decimalplace&quot;: &quot;8&quot;,  //小数位
+        &quot;bidsFilter&quot;: &quot;1&quot;,  //深度图规则bids 最大值
+        &quot;asksFilter&quot;: &quot;1&quot;,  //深度图规则asks 最小值
+        &quot;asksBgRule&quot;: &quot;1&quot;,  //背景颜色 ASKs
+        &quot;bidsBgRule&quot;: &quot;1&quot;,  //背景颜色 BIDs
+        &quot;bids&quot;: [
+        {price: &quot;0.092000&quot;, quantity: &quot;1.000&quot;, amount: &quot;0.09200000&quot;},
+        {price: &quot;0.092000&quot;, quantity: &quot;1.000&quot;, amount: &quot;0.09200000&quot;}],    //bid
+        &quot;asks&quot;: [
+        {price: &quot;0.092000&quot;, quantity: &quot;1.000&quot;, amount: &quot;0.09200000&quot;}]     //ask
+  }
+}
+</code></pre>
+<h2 id="-klines-">获取klines接口</h2>
+<pre><code>GET https://market.happyex.net/v1/klines.ashx?symbol={symbol}&amp;interval={interval}&amp;lang={lang}&amp;version={version}
+</code></pre><ol>
+<li>symbol:合约代码</li>
+<li><p>interval:</p>
+<pre><code>     time , 1m , 3m , 5m , 15m , 30m , 1h , 2h , 4h , 6h , 8h , 12h , 1d , 1w
+</code></pre></li>
+<li><p>lang:语言</p>
+</li>
+<li>version:版本</li>
+<li>starttime: long  开始时间</li>
+<li>endtime: long  结束时间</li>
+<li>count: 记录数，默认3000</li>
+</ol>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;symbol&quot;: &quot;ETH_BTC&quot;, //合约代码
+        &quot;status&quot;: true, //开盘状态
+        &quot;statusText&quot;: &quot;&quot;, //开盘说明
+        &quot;name&quot;: &quot;ETH/BTC&quot;, //合约显示名字
+        &quot;assetCode&quot;: &quot;ETH&quot;, //资金代码
+        &quot;curMarket&quot;: &quot;BTC&quot;, //市场代码
+        &quot;tickSize&quot;: &quot;0.000000&quot;, //最小价格波动
+        &quot;decimalplace&quot;: &quot;6&quot;, //小数位
+        &quot;open&quot;: &quot;0.000000&quot;, //24小时开盘价
+        &quot;high&quot;: &quot;0.000000&quot;, //24小时最高价
+        &quot;low&quot;: &quot;0.000000&quot;, //24小时最低价
+        &quot;close&quot;: &quot;0.000000&quot;, //最新价格
+        &quot;volume&quot;: &quot;0.000000&quot;, //交易量
+        &quot;upDown&quot;: &quot;0.000000&quot;, //涨跌额
+        &quot;upDownRate&quot;: &quot;1%&quot;, //涨跌幅
+        &quot;tradedMoney&quot;: &quot;12345.90&quot;, //交易额
+        &quot;lastTime&quot;: &quot;1516125780000&quot;, //最新成交时间
+        &quot;lastTimeDataTime&quot;: &quot;1516125780000&quot;, //最新一条时间轴的时间，对webscoket校验使用
+        &quot;legalAmount&quot;: &quot;￥100&quot;, //法币金额
+        &quot;timeData&quot;: [
+            {
+            &quot;time&quot;: &quot;1516125780000&quot;, //时间
+            &quot;open&quot;: &quot;0.00000028&quot;, //开盘价
+            &quot;low&quot;: &quot;0.00000001&quot;, //最低价
+            &quot;high&quot;: &quot;0.000001&quot;, //最高价
+            &quot;close&quot;: &quot;0.00000023&quot;, //收盘价
+            &quot;vol&quot;: &quot;0.00332783&quot;, //量
+            &quot;val&quot;: &quot;0.00332783&quot;, //额
+            &quot;prevClose&quot;: &quot;0.00332783&quot;, //昨收
+            &quot;upDown&quot;: &quot;0.000000&quot;, //涨跌额
+            &quot;upDownRate&quot;: &quot;1%&quot; //涨跌幅
+            }
+                    ]
+            }
+}
+</code></pre>
+<h1 id="-">交易接口</h1>
+<h2 id="buypage-">buypage 接口</h2>
+<pre><code>POST https://broker.happyex.net/buypage.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;,&quot;symbol&quot;:&quot;ETH_BTC&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>string</td>
+<td>symbol</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;assetcode&quot;: &quot;资产币种&quot;,
+        &quot;curmarket&quot;: &quot;币种市场&quot;,
+        &quot;assetcamount&quot;: &quot;assetcode余额（ 可卖）&quot;,
+        &quot;curamount&quot;: &quot;curmarket余额（ 可买）&quot;,
+        &quot;tradefeerate&quot;: &quot;手续费比例&quot;,
+        &quot;hasdiscount&quot;: &quot;手续费是否有折扣&quot;,
+        &quot;tradefeediscount&quot;: &quot;折扣后的手续费比例&quot;,
+        &quot;sellmaxvol&quot;: &quot;最大可卖数量&quot;,
+        &quot;minpx&quot;: &quot;委托价格的最小单位&quot;,
+        &quot;minvol&quot;: &quot;交易数量的最小单位&quot;,
+        &quot;minval&quot;: &quot;最小交易金额&quot;,
+        &quot;morderpxrange&quot;: &quot;市价单委托价格在最新价基础上的浮动比例&quot;,
+        &quot;minvalplace&quot;: &quot;交易金额的最小单位&quot;,
+        &quot;legalrate&quot;: &quot;&quot;,
+        &quot;legalcur&quot;: &quot;法币单位&quot;
+    }
+}
+</code></pre>
+<h2 id="order-">order 接口</h2>
+<pre><code>POST https://broker.happyex.net/order.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;aaa&quot;,&quot;assetcode&quot;:&quot;GAS&quot;,&quot;curmarket&quot;:&quot;BTC&quot;,...}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>string</td>
+<td>symbol</td>
+</tr>
+<tr>
+<td>assetcode</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>string</td>
+<td>资产币种</td>
+</tr>
+<tr>
+<td>curmarket</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>string</td>
+<td>币种市场</td>
+</tr>
+<tr>
+<td>ordertype</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>int</td>
+<td>委托类型。市价单 1；限价单 2；止盈止损单 3 </td>
+</tr>
+<tr>
+<td>bstype</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>int</td>
+<td>买、卖。买入 1；卖出 2 </td>
+</tr>
+<tr>
+<td>price</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>decimal</td>
+<td>委托价格</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>decimal</td>
+<td>委托数量</td>
+</tr>
+<tr>
+<td>triggerdir</td>
+<td>POST</td>
+<td>可选</td>
+<td></td>
+<td>int</td>
+<td>触发方向大于等于触发价 1; 小于等于触发价触发 2</td>
+</tr>
+<tr>
+<td>triggerprice</td>
+<td>POST</td>
+<td>可选</td>
+<td></td>
+<td>decimal</td>
+<td>触发价格</td>
+</tr>
+<tr>
+<td>packtype</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>int</td>
+<td>包类型</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备型号（huawei、小米、iphone7、chrome、Safari等)</td>
+</tr>
+<tr>
+<td>deviceid</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备唯一标识ID</td>
+</tr>
+<tr>
+<td>timewindow</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>bigint</td>
+<td>时间窗口。默认是5000，单位ms</td>
+</tr>
+<tr>
+<td>timeinforce</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>委托过期时间限制。IOC；GTC</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;下单请求已发送&quot;,
+    &quot;data&quot;: {}
+}
+
+{
+    &quot;status&quot;: &quot;-1&quot;,
+    &quot;message&quot;: &quot;下单请求发送失败&quot;,
+    &quot;data&quot;: {}
+}
+
+{
+    &quot;status&quot;: &quot;4&quot;,
+    &quot;message&quot;: &quot;余额不足&quot;,
+    &quot;data&quot;: {}
+}
+</code></pre>
+<h2 id="batchorder-">batchorder 批量下单接口</h2>
+<pre><code>POST https://broker.happyex.net/batchorder.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;aaa&quot;,...}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>list</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>object</td>
+<td></td>
+</tr>
+<tr>
+<td>-&gt; ordermark</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>long</td>
+<td>order在当前数组中的唯一标识</td>
+</tr>
+<tr>
+<td>-&gt; symbol</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>string</td>
+<td>symbol</td>
+</tr>
+<tr>
+<td>-&gt; assetcode</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>string</td>
+<td>资产币种</td>
+</tr>
+<tr>
+<td>-&gt; curmarket</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>string</td>
+<td>币种市场</td>
+</tr>
+<tr>
+<td>-&gt; ordertype</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>int</td>
+<td>委托类型。市价单 1；限价单 2；止盈止损单 3 </td>
+</tr>
+<tr>
+<td>-&gt; bstype</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>int</td>
+<td>买、卖。买入 1；卖出 2 </td>
+</tr>
+<tr>
+<td>-&gt; price</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>decimal</td>
+<td>委托价格</td>
+</tr>
+<tr>
+<td>-&gt; quantity</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>decimal</td>
+<td>委托数量</td>
+</tr>
+<tr>
+<td>-&gt; triggerdir</td>
+<td></td>
+<td></td>
+<td>可选</td>
+<td>int</td>
+<td>触发方向大于等于触发价 1; 小于等于触发价触发 2</td>
+</tr>
+<tr>
+<td>-&gt; triggerprice</td>
+<td></td>
+<td></td>
+<td>可选</td>
+<td>decimal</td>
+<td>触发价格</td>
+</tr>
+<tr>
+<td>-&gt; packtype</td>
+<td></td>
+<td></td>
+<td>是</td>
+<td>int</td>
+<td>包类型</td>
+</tr>
+<tr>
+<td>-&gt; devicetype</td>
+<td></td>
+<td></td>
+<td>否</td>
+<td>string</td>
+<td>设备型号（huawei、小米、iphone7、chrome、Safari等)</td>
+</tr>
+<tr>
+<td>-&gt; deviceid</td>
+<td></td>
+<td></td>
+<td>否</td>
+<td>string</td>
+<td>设备唯一标识ID</td>
+</tr>
+<tr>
+<td>-&gt; timewindow</td>
+<td></td>
+<td></td>
+<td>否</td>
+<td>bigint</td>
+<td>时间窗口。默认是5000，单位ms</td>
+</tr>
+<tr>
+<td>-&gt; timeinforce</td>
+<td></td>
+<td></td>
+<td>否</td>
+<td>string</td>
+<td>委托过期时间限制。IOC；GTC</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: [{
+        &quot;ordermark&quot;: 1,
+        &quot;message&quot;: &quot;&quot;,
+        &quot;status&quot;: &quot;1&quot;,
+        &quot;orderno&quot;: &quot;476&quot;
+    }]
+}
+
+{
+    &quot;status&quot;: &quot;-1&quot;,
+    &quot;message&quot;: &quot;下单请求发送失败&quot;,
+    &quot;data&quot;: {}
+}
+
+{
+    &quot;status&quot;: &quot;4&quot;,
+    &quot;message&quot;: &quot;余额不足&quot;,
+    &quot;data&quot;: {}
+}
+</code></pre>
+<h2 id="-">成交详情接口</h2>
+<pre><code>POST https://broker.happyex.net/orderexedetail.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;aaa&quot;,&quot;orderno&quot;:&quot;1&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>orderno</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>bigint</td>
+<td>订单号</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;totalfee&quot;: &quot;总手续费&quot;,
+        &quot;totalamount&quot;: &quot;总成交额&quot;,
+        &quot;list&quot;: [{
+            &quot;exetime&quot;: &quot;成交时间&quot;,
+            &quot;filledprice&quot;: &quot;成交价&quot;,
+            &quot;filledquantity&quot;: &quot;成交数量&quot;,
+            &quot;tradefee&quot;: &quot;手续费&quot;,
+            &quot;filledamount&quot;: &quot;成交金额&quot;
+        }]
+    }
+}
+</code></pre>
+<h2 id="-">查询成交历史接口</h2>
+<pre><code>POST https://broker.happyex.net/queryexecution.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;test&quot;,&quot;page&quot;:&quot;1&quot;,&quot;pagesize&quot;:&quot;100&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>startdate</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>bigint</td>
+<td>开始日期（Unix timestamp，毫秒）</td>
+</tr>
+<tr>
+<td>enddate</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>bigint</td>
+<td>结束日志（Unix timestamp，毫秒）</td>
+</tr>
+<tr>
+<td>assetcode</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>资产货币</td>
+</tr>
+<tr>
+<td>curmarket</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>资产货币市场</td>
+</tr>
+<tr>
+<td>bstype</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>买入 1；卖出 2</td>
+</tr>
+<tr>
+<td>page</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>页码</td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td></td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>每页个数</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;pagecount&quot;: 页数,
+        &quot;datacount&quot;: 条目总数,
+        &quot;list&quot;: [{
+            &quot;exetime&quot;: 成交时间（ 时间戳）,
+            &quot;symbol&quot;: symbol,
+            &quot;name&quot;: name,
+            &quot;ordertype&quot;: 委托类型,
+            &quot;ordertypename&quot;: ordertype的文字形式,
+            &quot;bstype&quot;: 买卖方向,
+            &quot;bstypename&quot;: bstype的文字形式,
+            &quot;filledprice&quot;: 成交价,
+            &quot;filledquantity&quot;: 成交数量,
+            &quot;tradefee&quot;: 手续费,
+            &quot;filledamount&quot;: 成交金额,
+            &quot;exeid&quot;: 成交ID,
+            &quot;orderno&quot;: 委托ID
+        }]
+    }
+}
+</code></pre>
+<h2 id="cancelorder-">cancelorder 撤单接口</h2>
+<pre><code>POST https://broker.happyex.net/cancel.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;aaa&quot;,&quot;orderno&quot;:1,...}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>orderno</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>bigint</td>
+<td>订单号</td>
+</tr>
+<tr>
+<td>packtype</td>
+<td>POST</td>
+<td>是</td>
+<td></td>
+<td>int</td>
+<td>包类型</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备型号（huawei、小米、iphone7、chrome、Safari等)</td>
+</tr>
+<tr>
+<td>deviceid</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备唯一标识ID  </td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;撤单请求已发送&quot;,
+    &quot;data&quot;: {}
+}
+
+{
+    &quot;status&quot;: &quot;-1&quot;,
+    &quot;message&quot;: &quot;撤单请求发送失败&quot;,
+    &quot;data&quot;: {}
+}
+
+</code></pre>
+<h2 id="batchcancelorder-">batchcancelorder 批量撤单接口</h2>
+<pre><code>POST https://broker.happyex.net/batchcancel.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;aaa&quot;,&quot;apikey&quot;:&quot;aaa&quot;,&quot;ordernos&quot;:1,...}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>ordernos</td>
+<td>POST</td>
+<td>是</td>
+<td>可选</td>
+<td>string</td>
+<td>订单号，多个订单用逗号分隔，如 {&quot;ordernos&quot;:&quot;1,2,3&quot;} ordernos、all 二选一，如果该字段有值，优先取该值，all=1会无效</td>
+</tr>
+<tr>
+<td>all</td>
+<td>POST</td>
+<td>是</td>
+<td>可选</td>
+<td>int</td>
+<td>1 全部撤单；否则，传0或者不传</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>POST</td>
+<td>是</td>
+<td>可选</td>
+<td>string</td>
+<td>all=1时，symbol != &#39;&#39;，撤销symbol的所有挂单</td>
+</tr>
+<tr>
+<td>ordertype</td>
+<td>POST</td>
+<td>是</td>
+<td>可选</td>
+<td>int</td>
+<td>all=1时，该字段才有效。2 限价单；3 止盈止损单。 all=1 &amp;&amp; ordertype=2，表示限价单全部撤单  all=1 &amp;&amp; ordertype=3，表示止盈止损单全部撤单</td>
+</tr>
+<tr>
+<td>devicetype</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备型号（huawei、小米、iphone7、chrome、Safari等)</td>
+</tr>
+<tr>
+<td>deviceid</td>
+<td>POST</td>
+<td>否</td>
+<td></td>
+<td>string</td>
+<td>设备唯一标识ID</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;撤单请求已发送&quot;,
+    &quot;data&quot;: {}
+}
+
+{
+    &quot;status&quot;: &quot;-1&quot;,
+    &quot;message&quot;: &quot;撤单请求部分失败&quot;,
+    &quot;data&quot;: {}
+}
+
+</code></pre>
+<h2 id="-">查询当前委托接口</h2>
+<pre><code>POST https://broker.happyex.net/queryorder.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;,&quot;symbol&quot;:&quot;ETH_BTC&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td></td>
+<td>是</td>
+<td>可选</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;list&quot;: [{
+            &quot;orderno&quot;: &quot;委托ID（ 撤单时使用）&quot;,
+            &quot;ordertime&quot;: &quot; 委托时间&quot;,
+            &quot;symbol&quot;: &quot;symbol&quot;,
+            &quot;name&quot;: &quot;name&quot;,
+            &quot;ordertype&quot;: &quot;委托类型&quot;,
+            &quot;ordertypename&quot;: &quot;ordertype的文字形式&quot;,
+            &quot;orderstatus&quot;: &quot;委托状态&quot;,
+            &quot;bstype&quot;: &quot;买卖&quot;,
+            &quot;bstypename&quot;: &quot;bstype的文字形式&quot;,
+            &quot;orderprice&quot;: &quot;委托价格&quot;,
+            &quot;orderquantity&quot;: &quot;委托数量&quot;,
+            &quot;filledquantity&quot;: &quot;成交数量&quot;,
+            &quot;filledrate&quot;: &quot;成交率&quot;,
+            &quot;amount&quot;: &quot;金额&quot;,
+            &quot;triggercon&quot;: &quot;触发条件&quot;,
+            &quot;bsandotype&quot;: &quot;委托类型及买卖拼接字段&quot;
+        }]
+    }
+}
+
+</code></pre>
+<h2 id="-">批量查询委托</h2>
+<pre><code>POST https://broker.happyex.net/querybatchorders.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>ordernos</td>
+<td>POST</td>
+<td></td>
+<td>是</td>
+<td>string</td>
+<td>多个orderno，用逗号分隔，如 &quot;ordernos&quot;:&quot;1,2,3&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;list&quot;: [{
+            &quot;orderno&quot;: 委托ID（ 撤单时使用）,
+            &quot;ordertime&quot;: 委托时间（ 时间戳）,
+            &quot;symbol&quot;: symbol,
+            &quot;name&quot;: name,
+            &quot;ordertype&quot;: 委托类型,
+            &quot;ordertypename&quot;: ordertype的文字形式,
+            &quot;orderstatus&quot;: 委托状态,
+            &quot;bstype&quot;: 买卖,
+            &quot;bstypename&quot;: bstype的文字形式,
+            &quot;orderprice&quot;: 委托价格,
+            &quot;orderquantity&quot;: 委托数量,
+            &quot;filledprice&quot;: 成交均价,
+            &quot;filledquantity&quot;: 成交数量,
+            &quot;filledrate&quot;: 成交率,
+            &quot;amount&quot;: 金额,
+            &quot;triggercon&quot;: 触发条件,
+            &quot;bsandotype&quot;: 委托类型及买卖拼接字段
+        }]
+    }
+}
+</code></pre>
+<h2 id="-">查询历史委托接口</h2>
+<pre><code>POST https://broker.happyex.net/queryhisorder.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>startdate</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>bigint</td>
+<td>开始日期（时间戳，毫秒）</td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>每页个数</td>
+</tr>
+<tr>
+<td>page</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>页码</td>
+</tr>
+<tr>
+<td>enddate</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>bigint</td>
+<td>结束日志（时间戳，毫秒）</td>
+</tr>
+<tr>
+<td>curmarket</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>资产货币市场</td>
+</tr>
+<tr>
+<td>bstype</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>买入 1；卖出 2</td>
+</tr>
+<tr>
+<td>hidecancel</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>int</td>
+<td>是否隐藏已撤单。不隐藏 0；隐藏 1。默认是0。</td>
+</tr>
+<tr>
+<td>assetcode</td>
+<td>POST</td>
+<td>是</td>
+<td>否</td>
+<td>string</td>
+<td>资产货币</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;pagecount&quot;: 页数,
+        &quot;datacount&quot;: 条目总数,
+        &quot;list&quot;: [{
+            &quot;orderno&quot;: 委托ID,
+            &quot;ordertime&quot;: 委托时间（时间戳）,
+            &quot;symbol&quot;: symbol,
+            &quot;name&quot;: name,
+            &quot;ordertype&quot;: 委托类型,
+            &quot;ordertypename&quot;: ordertype的文字形式,
+            &quot;bstype&quot;: 买卖,
+            &quot;bstypename&quot;: bstype的文字形式,
+            &quot;orderprice&quot;: 委托价格,
+            &quot;orderquantity&quot;: 委托数量,
+            &quot;filledprice&quot;: 成交价格,
+            &quot;filledquantity&quot;: 成交数量,
+            &quot;orderstatus&quot;: 委托状态,
+            &quot;orderstatusname&quot;: orderstatus的文字形式,
+            &quot;amount&quot;: 金额,
+            &quot;triggercon&quot;: 触发条件
+        }]
+    }
+}
+</code></pre>
+<h2 id="-">用户资金列表接口</h2>
+<pre><code>POST https://broker.happyex.net/userasset.ashx?&amp;packtype={packtype}&amp;version={version}&amp;lang={lang}
+</code></pre><ul>
+<li>param是由POST参数构造成以下格式加密后得到的:</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<p>{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;,&quot;sortfield&quot;:&quot;amount&quot;,&quot;sortdir&quot;:&quot;1&quot;}</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>HTTP method</th>
+<th>是否加密</th>
+<th>是否必须</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>usertoken</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值</td>
+</tr>
+<tr>
+<td>apikey</td>
+<td>POST</td>
+<td>是</td>
+<td>是</td>
+<td>string</td>
+<td>apikey 平台提供</td>
+</tr>
+<tr>
+<td>sortfield</td>
+<td>POST</td>
+<td></td>
+<td>否</td>
+<td>string</td>
+<td>排序字段，默认amount</td>
+</tr>
+<tr>
+<td>sortdir</td>
+<td>POST</td>
+<td></td>
+<td>否</td>
+<td>string</td>
+<td>0：降序，1：升序；默认0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Payload:</strong></p>
+<pre><code class="lang-json">{
+    &quot;status&quot;: &quot;1&quot;,
+    &quot;message&quot;: &quot;&quot;,
+    &quot;data&quot;: {
+        &quot;totalval&quot;: &quot;当前总估值&quot;,
+        &quot;btctotalval&quot;: &quot;btc估值&quot;,
+        &quot;legaltotalval&quot;: &quot;法币估值&quot;,
+        &quot;withdrawlimit&quot;: &quot;24 小时提现额度&quot;,
+        &quot;limitused&quot;: &quot;已用额度&quot;,
+        &quot;pettyval&quot;: &quot;小额资产的定义值, 多少算小额资产&quot;,
+        &quot;list&quot;: [{
+            &quot;assetcode&quot;: &quot;资产代码&quot;,
+            &quot;assetfullname&quot;: &quot;资产全称&quot;,
+            &quot;amount&quot;: &quot;总额&quot;,
+            &quot;canusedamount&quot;: &quot;可用余额&quot;,
+            &quot;frozenamount&quot;: &quot;下单冻结金额&quot;,
+            &quot;frozenwithdraw&quot;: &quot;提现冻结&quot;,
+            &quot;btcval&quot;: &quot;btc估值&quot;,
+            &quot;legalval&quot;: &quot;法币估值&quot;,
+            &quot;depositstatus&quot;: &quot;充值按钮状态&quot;,
+            &quot;withdrawstaus&quot;: &quot;提现按钮状态&quot;,
+            &quot;tradestatus&quot;: &quot;交易按钮状态&quot;,
+            &quot;hastag&quot;: &quot;&quot;,
+            &quot;logourl&quot;: &quot;图片url地址&quot;
+        }]
+    }
+}
+</code></pre>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+});
+//-->
+</SCRIPT>
