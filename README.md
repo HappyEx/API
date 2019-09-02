@@ -1,4 +1,7 @@
-## 接口一般约定
+# 接口一般约定
+
+## 参数要求
+
 * **所有时间戳都精确到毫秒，用13位的bigint格式**
 * **http请求的时候公共参数(每次请求http接口的时都需带上的参数)：lang,packtype,version,usertoken** 
 * **每次http请求返回的结果内容都是json格式的字符串**
@@ -66,7 +69,8 @@ message	错误信息	当status==-1的时候，用来显示的错误信息
 desKey与desIV 请在happyex网站apikey设置页面获取（暂未开放，需联系技术人员提供）
 
 **C# demo**
-```C#
+
+```c#
 public static string EncodeParam(string param, string desKey, string desIV)
 {
     byte[] data = Encoding.UTF8.GetBytes(param);
@@ -101,7 +105,8 @@ public static string DecodeParam(string hexString, string desKey, string desIV)
 ```
 
 **PHP demo**
-```PHP
+
+```php
 <?php
 class CryptDes {
      var $key;
@@ -171,7 +176,8 @@ echo $ret = $des->decrypt("密文");//加密字符串
 ```
 
 **Java demo**
-```Java
+
+```java
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
@@ -256,7 +262,6 @@ public class Des3Utils {
     }
 }
 
-
 ```
 
 
@@ -275,7 +280,8 @@ GET https://market.happyex.net/v1/product.ashx?curMarket={curMarket}&assetCode={
 
 
 **Payload:**
-```javascript
+
+```json
 {	
     "status": "1",
 	"message": "success",
@@ -316,7 +322,8 @@ GET https://market.happyex.net/v1/aggtrades.ashx?symbol={symbol}&limit={limit}&l
 * version:版本
 
 **Payload:**
-```javascript
+
+```json
 {
     "status": "1",
     "message": "success",
@@ -344,7 +351,8 @@ GET https://market.happyex.net/v1/depth.ashx?symbol={symbol}&limit={limit}&lang=
 * version:版本
 
 **Payload:**
-```javascript
+
+```json
 {
   "status": "1",
   "message": "success",
@@ -361,8 +369,11 @@ GET https://market.happyex.net/v1/depth.ashx?symbol={symbol}&limit={limit}&lang=
 		"asksFilter": "1",  //深度图规则asks 最小值
 		"asksBgRule": "1",  //背景颜色 ASKs
 		"bidsBgRule": "1",  //背景颜色 BIDs
-		"bids": [{price: "0.092000", quantity: "1.000", amount: "0.09200000"},{price: "0.092000", quantity: "1.000", amount: "0.09200000"}],    //bid
-		"asks": [{price: "0.092000", quantity: "1.000", amount: "0.09200000"}]       //ask
+		"bids": [
+		{price: "0.092000", quantity: "1.000", amount: "0.09200000"},
+		{price: "0.092000", quantity: "1.000", amount: "0.09200000"}],    //bid
+		"asks": [
+		{price: "0.092000", quantity: "1.000", amount: "0.09200000"}]     //ask
   }
 }
 ```
@@ -384,7 +395,8 @@ GET https://market.happyex.net/v1/klines.ashx?symbol={symbol}&interval={interval
 7. count: 记录数，默认3000
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "success",
@@ -407,7 +419,7 @@ GET https://market.happyex.net/v1/klines.ashx?symbol={symbol}&interval={interval
 		"tradedMoney": "12345.90", //交易额
 		"lastTime": "1516125780000", //最新成交时间
 		"lastTimeDataTime": "1516125780000", //最新一条时间轴的时间，对webscoket校验使用
-		"legalAmount": "￥100" //法币金额
+		"legalAmount": "￥100", //法币金额
 		"timeData": [
 			{
 			"time": "1516125780000", //时间
@@ -415,10 +427,10 @@ GET https://market.happyex.net/v1/klines.ashx?symbol={symbol}&interval={interval
 			"low": "0.00000001", //最低价
 			"high": "0.000001", //最高价
 			"close": "0.00000023", //收盘价
-			"vol": "0.00332783" //量
-			"val": "0.00332783" //额
-			"prevClose": "0.00332783" //昨收
-			"upDown": "0.000000" //涨跌额
+			"vol": "0.00332783", //量
+			"val": "0.00332783", //额
+			"prevClose": "0.00332783", //昨收
+			"upDown": "0.000000", //涨跌额
 			"upDownRate": "1%" //涨跌幅
 			}
 		            ]
@@ -451,7 +463,8 @@ symbol | POST | 是|   |  string | symbol
 
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -511,7 +524,8 @@ timeinforce | POST | 否 |  | string | 委托过期时间限制。IOC；GTC
   
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "下单请求已发送",
@@ -544,7 +558,6 @@ POST https://broker.happyex.net/batchorder.ashx?&packtype={packtype}&version={ve
 
 {"usertoken":"aaa","apikey":"aaa",...}
 
-
 参数 | HTTP method | 是否加密 | 是否必须 | 类型 | 含义
 ------------ | ------------ | ------------ | ------------ | ------------ | ------------
 usertoken | POST | 是 | 是 | string | 用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值
@@ -569,7 +582,8 @@ list | POST | 是 | 是 | object |
   
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -614,7 +628,8 @@ apikey | POST | 是 | 是 | string | apikey 平台提供
 orderno | POST | 是|  是 |  bigint | 订单号
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -661,7 +676,8 @@ pagesize |  | 是|  否 |  int | 每页个数
  
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -701,7 +717,6 @@ POST https://broker.happyex.net/cancel.ashx?&packtype={packtype}&version={versio
 
 {"usertoken":"aaa","apikey":"aaa","orderno":1,...}
 
-
 参数 | HTTP method | 是否加密 | 是否必须 | 类型 | 含义
 ------------ | ------------ | ------------ | ------------ | ------------ | ------------
 usertoken | POST | 是 | 是 | string | 用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值
@@ -709,12 +724,11 @@ apikey | POST | 是 | 是 | string | apikey 平台提供
 orderno | POST | 是|   |  bigint | 订单号
 packtype | POST | 是 |  | int | 包类型
 devicetype | POST | 否 |  | string | 设备型号（huawei、小米、iphone7、chrome、Safari等)
-deviceid | POST | 否 |  | string | 设备唯一标识ID
-
-  
+deviceid | POST | 否 |  | string | 设备唯一标识ID  
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "撤单请求已发送",
@@ -728,7 +742,6 @@ deviceid | POST | 否 |  | string | 设备唯一标识ID
 }
 
 ```
-
 
 
 ## batchcancelorder 批量撤单接口
@@ -757,7 +770,8 @@ deviceid | POST | 否 |  | string | 设备唯一标识ID
   
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "撤单请求已发送",
@@ -790,7 +804,8 @@ apikey | POST | 是 | 是 | string | apikey 平台提供
 symbol |  | 是|  可选 |  string | 
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -815,6 +830,7 @@ symbol |  | 是|  可选 |  string |
 		}]
 	}
 }
+
 ```
 
 
@@ -835,11 +851,11 @@ POST https://broker.happyex.net/querybatchorders.ashx?&packtype={packtype}&versi
 usertoken | POST | 是 | 是 | string | 用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值
 apikey | POST | 是 | 是 | string | apikey 平台提供
 ordernos | POST | | 是 |  string | 多个orderno，用逗号分隔，如 "ordernos":"1,2,3"
-
  
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -856,7 +872,7 @@ ordernos | POST | | 是 |  string | 多个orderno，用逗号分隔，如 "order
 			"bstypename": bstype的文字形式,
 			"orderprice": 委托价格,
 			"orderquantity": 委托数量,
-                                                "filledprice": 成交均价,
+			"filledprice": 成交均价,
 			"filledquantity": 成交数量,
 			"filledrate": 成交率,
 			"amount": 金额,
@@ -892,12 +908,12 @@ curmarket | POST | 是|  否 |  string | 资产货币市场
 bstype | POST | 是|  否 |  int | 买入 1；卖出 2
 hidecancel | POST | 是|  否 |  int | 是否隐藏已撤单。不隐藏 0；隐藏 1。默认是0。
 assetcode | POST | 是|  否 |  string | 资产货币
-
  
 
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
@@ -906,7 +922,7 @@ assetcode | POST | 是|  否 |  string | 资产货币
 		"datacount": 条目总数,
 		"list": [{
 			"orderno": 委托ID,
-			"ordertime": 委托时间（ 时间戳）,
+			"ordertime": 委托时间（时间戳）,
 			"symbol": symbol,
 			"name": name,
 			"ordertype": 委托类型,
@@ -948,7 +964,8 @@ sortdir | POST | | 否 |  string | 0：降序，1：升序；默认0
  
 
 **Payload:**
-```javascript
+
+```json
 {
 	"status": "1",
 	"message": "",
