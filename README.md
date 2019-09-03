@@ -1,6 +1,7 @@
 
 # 接口一般约定
 
+
 ## 参数要求
 
 * **所有时间戳都精确到毫秒，用13位的bigint格式**
@@ -56,8 +57,6 @@ curl -X POST 'https://broker.happyex.net/queryorder.ashx?lang=cn&packtype=1&vers
 * -4 余额不足需要弹充值框
 * -5 密码重试太多，需要弹找回密码框
 message	错误信息	当status==-1的时候，用来显示的错误信息
-
-
 
 
 ## Post加密方式
@@ -264,6 +263,13 @@ public class Des3Utils {
 }
 
 ```
+
+## 加解密测试
+
+| 明文 | 密文 |
+| :------------ | :------------ |
+|  {"usertoken":"test","apikey":"test","symbol":"ETH_BTC"} | DA5D47C0F87626636A70BABE6B0DA980C0D18646D36A45BE3CAA1EC11B545AF53E13A07456269D742E3EA4423CD7B72A009A80AB89F9EC38  |
+|  {"status":"1","message":"下单请求已发送","data":{"orderno":1000001}} |  31A5F7E976911D0312A32EF97F9D3D883830A1900C14F97D023C17F1D32A0541B7031ED2EB6240038D150A1687E84220984EEDE7D53FF83B895E2162F454422E895DA38DDF65770E56075F5C5C4B4B37 |
 
 
 # 行情接口
