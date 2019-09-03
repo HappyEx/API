@@ -408,6 +408,25 @@ public class Des3Utils {
 }
 
 </code></pre>
+                <h2 id="-">加解密测试</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="text-align:left">明文</th>
+                            <th style="text-align:left">密文</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left">{&quot;usertoken&quot;:&quot;test&quot;,&quot;apikey&quot;:&quot;test&quot;,&quot;symbol&quot;:&quot;ETH_BTC&quot;}</td>
+                            <td style="text-align:left">DA5D47C0F87626636A70BABE6B0DA980C0D18646D36A45BE3CAA1EC11B545AF53E13A07456269D742E3EA4423CD7B72A009A80AB89F9EC38</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left">{&quot;status&quot;:&quot;1&quot;,&quot;message&quot;:&quot;下单请求已发送&quot;,&quot;data&quot;:{&quot;orderno&quot;:1000001}}</td>
+                            <td style="text-align:left">31A5F7E976911D0312A32EF97F9D3D883830A1900C14F97D023C17F1D32A0541B7031ED2EB6240038D150A1687E84220984EEDE7D53FF83B895E2162F454422E895DA38DDF65770E56075F5C5C4B4B37</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <h1 id="-">行情接口</h1>
                 <h2 id="-">获取品种列表</h2>
 <pre><code>GET https://market.happyex.net/v1/product.ashx?curMarket={curMarket}&amp;assetCode={assetCode}&amp;lang={lang}&amp;version={version}
