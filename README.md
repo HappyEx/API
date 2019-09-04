@@ -672,8 +672,8 @@ POST https://broker.happyex.net/queryexecution.ashx?&packtype={packtype}&version
 ------------ | ------------ | ------------ | ------------ | ------------ | ------------
 usertoken | POST | 是 | 是 | string | 用户token,通过用户登录获取，假如使用apikey获取接口的话，usertoken传apikey的值
 apikey | POST | 是 | 是 | string | apikey 平台提供
-startdate |  | 是|  否 |  bigint | 开始日期（Unix timestamp，毫秒）
-enddate |  | 是|  否 |  bigint | 结束日志（Unix timestamp，毫秒）
+startdate |  | 是|  否 |  bigint | 开始时间（Unix timestamp，毫秒）
+enddate |  | 是|  否 |  bigint | 结束时间（Unix timestamp，毫秒）
 assetcode |  | 是|  否 |  string | 资产货币
 curmarket |  | 是|  否 |  string | 资产货币市场
 bstype |  | 是|  否 |  int | 买入 1；卖出 2
